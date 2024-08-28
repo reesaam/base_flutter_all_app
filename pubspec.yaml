@@ -138,6 +138,8 @@ flutter:
     - assets/images/
     - assets/logos/
     - assets/fonts/
+    - assets/local_files/
+    - assets/local_files/data_json/
 
   fonts:
     - family: Ubuntu

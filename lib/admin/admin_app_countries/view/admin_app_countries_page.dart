@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../app/components/general_widgets/app_dividers.dart';
 import '../../../core/app_extensions/extensions_on_enums/extension_on_countries.dart';
@@ -10,6 +11,7 @@ import '../../../core/app_extensions/extensions_on_data_types/extension_string.d
 import '../../../core/core_widgets.dart';
 import '../../../core/elements/core_view.dart';
 import '../../../app/components/main_components/app_bar.dart';
+import '../../../data/parsers/app_countries/app_country_model/app_country_model.dart';
 import '../../../data/resources/app_countries.dart';
 import '../../../data/resources/app_paddings.dart';
 import '../../../data/resources/app_spaces.dart';
@@ -26,29 +28,36 @@ class AdminAppCountriesPage extends CoreView<AdminAppCountriesController> {
   EdgeInsets? get pagePadding => AppPaddings.zero;
 
   @override
-  Widget get body => Column(children: [AppDividers.general(), Column(children: List<Widget>.generate(controller.countries.length, (index) => _section(controller.countries[index])))]);
+  Widget get body => Column(children: [
+        AppDividers.general(),
+        Obx(() => Column(
+            children: List<Widget>.generate(
+              controller.countries.value.countriesList.length,
+                  (index) => _section(controller.countries.value.countriesList[index]),
+            ))),
+      ]);
 
-  _section(AppCountry country) => Column(children: [
+  _section(AppCountryModel country) => Column(children: [
         Padding(
             padding: AppPaddings.buttonXLarge,
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Expanded(
                   flex: 5,
                   child: Column(children: [
-                    _item('Name Abbr', country.countryNameAbbreviation),
-                    _item('TimeZone Abbr', country.timeZoneAbbreviation?.getMiddleElement<String>()),
-                    _item('TimeZone Offset', country.timeZoneOffset?.getMiddleElement<DurationCustomModel>().toDuration().toTimeZoneFormat()),
+                    _item('Name Abbr', country.code),
+                    _item('TimeZone Abbr', country.timeZones?.getMiddleElement<String>()),
+                    _item('TimeZone Offset', country.timeZoneOffsets?.getMiddleElement<DurationCustomModel>().toDuration().toTimeZoneFormat()),
                     _item('Code', country.code),
-                    _item('Currency', country.currency?.name),
-                    _item('Currency Sign', country.currency?.sign.string),
+                    // _item('Currency', country.currency?.name),
+                    // _item('Currency Sign', country.currency?.sign.string),
                   ])),
               shrinkExpanded(2),
               Expanded(
                   flex: 2,
                   child: Column(children: [
-                    country.flag(rounded: true, hasBorder: true),
+                    // country.flag(rounded: true, hasBorder: true),
                     AppSpaces.h20,
-                    Text(country.countryName ?? ''),
+                    Text(country.name ?? ''),
                   ])),
             ])),
         AppDividers.generalWithDisabledColor,

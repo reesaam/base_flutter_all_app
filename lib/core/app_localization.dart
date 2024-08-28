@@ -54,7 +54,7 @@ class AppLocalization {
 
   AppCountry getCountry() {
     var appSettings = const AppSettingData().loadFromStorage();
-    country = appSettings.country;
+    // country = appSettings.country;
     return country;
   }
 
